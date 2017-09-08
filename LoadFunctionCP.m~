@@ -1,0 +1,21 @@
+function [p] = LoadFunctionCP(x, L, type, varargin)
+% varargin = fraction of length (for trapezoidal load)
+% varargin = start and end of patch (for patch load)
+    if (type < 1) || (type > 3)
+        type = 1;
+    end
+    switch type
+        case 1 % Constant Load
+            p = 1;
+        case 2 % Linear ramp up
+            p = x/L;
+        case 3 % Linear ramp down
+            p = 1 - x/L;
+        case 4 % Trapezoidal Load
+            l = (1 - varargin)*L;
+            if (x < l/2)
+                p = 2*x/l;
+            elseif (L - x < l/2)
+                p = 1 - 2*x/l
+    end
+end
